@@ -1,0 +1,9 @@
+setup.py
+shmup/__init__.py
+shmup/__main__.py
+shmup/game.py
+shmup.egg-info/PKG-INFO
+shmup.egg-info/SOURCES.txt
+shmup.egg-info/dependency_links.txt
+shmup.egg-info/entry_points.txt
+shmup.egg-info/top_level.txt
