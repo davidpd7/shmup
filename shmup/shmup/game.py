@@ -50,6 +50,7 @@ class Game:
         
         fps_clock = pygame.time.Clock()
         while self.__running:
+            print("Hello")
             delta_time = fps_clock.tick(Game.__fps_clock)
             self.__process_event()
             self.__update(delta_time)
