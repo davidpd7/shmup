@@ -6,4 +6,5 @@ shmup.egg-info/PKG-INFO
 shmup.egg-info/SOURCES.txt
 shmup.egg-info/dependency_links.txt
 shmup.egg-info/entry_points.txt
+shmup.egg-info/requires.txt
 shmup.egg-info/top_level.txt

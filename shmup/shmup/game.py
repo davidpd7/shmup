@@ -17,7 +17,8 @@ class Game:
                         "right": pygame.K_RIGHT,
                         "up":pygame.K_UP,
                         "down":pygame.K_DOWN}
-    __fps_clock = 60
+    __fps = 60
+    __time_per_frame = 1000/__fps
 
 
     def __init__(self):
@@ -44,15 +45,18 @@ class Game:
         self.__hero_position = pygame.math.Vector2(self.__screen.get_width()/2 - self.__hero_image_half_width,
                                                   self.__screen.get_height()/2 - self.__hero_image_half_height)
       
-
-
     def run(self):
-        
-        fps_clock = pygame.time.Clock()
+         
+        last_time  = pygame.time.get_ticks()
+        time_since_last_update = 0
         while self.__running:
-            delta_time = fps_clock.tick(Game.__fps_clock)
-            self.__process_event()
-            self.__update(delta_time)
+            print(last_time,time_since_last_update)
+            delta_time, last_time = self.__calc_delta_time(last_time)
+            time_since_last_update += delta_time                                           
+            while time_since_last_update > Game.__time_per_frame:
+                time_since_last_update -= Game.__time_per_frame
+                self.__process_event()
+                self.__update(Game.__time_per_frame)
             self.__render()
         
         self.__quit()
@@ -118,3 +122,7 @@ class Game:
         
         return True
     
+    def __calc_delta_time(self, last_time):
+        current = pygame.time.get_ticks()
+        delta = current - last_time
+        return delta, current
