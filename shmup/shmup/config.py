@@ -14,7 +14,6 @@ def cfg_item(*items):
 class Config:
     
     __config_json_path, __config_json_filename = "shmup.assets.config", "config.json"
-
     __instance = None
 
     @staticmethod
