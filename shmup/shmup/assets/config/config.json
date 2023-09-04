@@ -1,27 +1,34 @@
-{
-    "hero" : {
-        "image": ["shmup","assets", "images", "hero.png"],
-        "speed" : 0.5
+{   
+    "game":{
+        "game_caption" : "David",
+        "screen_size" : [640,480],
+        "message" : "Game",
+        "background_color" : [82,31,145]
     },
 
-    "game_caption" : "David",
+    "entities":{
 
-    "font_path" : ["shmup","assets", "fonts", "Sansation.ttf"],
+        "hero" : {
+            "image_file": ["shmup.assets.images", "hero.png"],
+            "speed" : 0.5
+    }
+    },
+    "font": {
+        "file" : ["shmup.assets.fonts", "Sansation.ttf"],
+        "font_foreground_color" : [255,255,255]
+    },
 
-    "background_color" : [82,31,145],
+    "timing":{
+        "fps" : 60,
+        "time_per_frame" :16,
+        "max_update_time" : 1000,
+        "fps_pos" : [0,0]
 
-    "font_foreground_color" : [255,255,255],
-
-    "screen_size" : [640,480],
-
-    "message" : "Game",
-
-    "fps" : 60,
-
-    "time_per_frame" :16,
-
-    "pos" : [0,0],
-
-    "max_update_time" : 1000
-
+    },
+    "input":{
+        "key_mapping" : {"left": "left", 
+                    "right": "right",
+                    "up":"up",
+                    "down":"down"}
+                }
 }
