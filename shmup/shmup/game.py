@@ -2,16 +2,17 @@ import os
 
 import pygame
 
+from shmup.fps_stats import FPSStats
+
 class Game:
 
     __game_caption = "David"
     __hero_image_path = ['shmup','assets', 'images', 'images.png']
-    __font_path = ['shmup','assets', 'fonts', 'Sansation.ttf'] 
-    __screen_size = (640,480)
+    __font_path = ['shmup','assets', 'fonts', 'Sansation.ttf']
     __background_color = (82,31,145)
     __font_foreground_color = (255,255,255)
+    __screen_size = (640,480)
     __message = "Game"
-    __mesage_location = (10,10)
     __hero_speed = 0.5
     __key_maping = {"left": pygame.K_LEFT, 
                         "right": pygame.K_RIGHT,
@@ -37,6 +38,8 @@ class Game:
         self.__hero_image_half_width = self.__hero_image.get_width()/2
         self.__hero_image_half_height = self.__hero_image.get_height()/2
 
+        self.__fps_stats = FPSStats(font)
+
         self.__is_moving_left = False
         self.__is_moving_right = False
         self.__is_moving_up = False
@@ -49,8 +52,7 @@ class Game:
          
         last_time  = pygame.time.get_ticks()
         time_since_last_update = 0
-        while self.__running:
-            print(last_time,time_since_last_update)
+        while self.__running: 
             delta_time, last_time = self.__calc_delta_time(last_time)
             time_since_last_update += delta_time                                           
             while time_since_last_update > Game.__time_per_frame:
@@ -98,19 +100,17 @@ class Game:
         
         if self.__allow_move_inside_limits(distance):
             self.__hero_position += distance
-
-
+        
+        self.__fps_stats.update(delta_time)
 
     def __render(self):
-        x,y = pygame.mouse.get_pos()
+    
         self.__screen.fill(Game.__background_color)
-        x -= self.__hero_image_half_width
-        y -= self.__hero_image_half_height
         self.__screen.blit(self.__hero_image, self.__hero_position.xy)
-        self.__screen.blit(self.__my_text, Game.__mesage_location)
+        self.__fps_stats.render(self.__screen)
+
         pygame.display.update()
 
-        
     def __quit(self):
         pygame.quit()
 
