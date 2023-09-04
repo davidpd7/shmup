@@ -2,7 +2,6 @@
     "game":{
         "game_caption" : "David",
         "screen_size" : [640,480],
-        "message" : "Game",
         "background_color" : [82,31,145]
     },
 
