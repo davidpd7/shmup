@@ -1,0 +1,27 @@
+{
+    "hero" : {
+        "image": ["shmup","assets", "images", "images.png"],
+        "speed" : 0.5
+    },
+
+    "game_caption" : "David",
+
+    "font_path" : ["shmup","assets", "fonts", "Sansation.ttf"],
+
+    "background_color" : [82,31,145],
+
+    "font_foreground_color" : [255,255,255],
+
+    "screen_size" : [640,480],
+
+    "message" : "Game",
+
+    "fps" : 60,
+
+    "time_per_frame" :16,
+
+    "pos" : [0,0],
+
+    "max_update_time" : 1000
+
+}
