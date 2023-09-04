@@ -3,37 +3,27 @@ import os
 import pygame
 
 from shmup.fps_stats import FPSStats
+from shmup.config import Config
 
 class Game:
 
-    __game_caption = "David"
-    __hero_image_path = ['shmup','assets', 'images', 'images.png']
-    __font_path = ['shmup','assets', 'fonts', 'Sansation.ttf']
-    __background_color = (82,31,145)
-    __font_foreground_color = (255,255,255)
-    __screen_size = (640,480)
-    __message = "Game"
-    __hero_speed = 0.5
     __key_maping = {"left": pygame.K_LEFT, 
-                        "right": pygame.K_RIGHT,
-                        "up":pygame.K_UP,
-                        "down":pygame.K_DOWN}
-    __fps = 60
-    __time_per_frame = 1000/__fps
-
+                "right": pygame.K_RIGHT,
+                "up":pygame.K_UP,
+                "down":pygame.K_DOWN},
 
     def __init__(self):
         
         pygame.init()
-        self.__screen = pygame.display.set_mode(Game.__screen_size, 0, 32)
-        pygame.display.set_caption(Game.__game_caption)
-        self.__hero_image  =  pygame.image.load(os.path.join(*Game.__hero_image_path)).convert_alpha()
+        self.__screen = pygame.display.set_mode(Config.screen_size, 0, 32)
+        pygame.display.set_caption(Config.game_caption)
+        self.__hero_image  =  pygame.image.load(os.path.join(*Config.hero_image_path)).convert_alpha()
 
-        font = pygame.font.Font(os.path.join(*Game.__font_path))
-        self.__my_text = font.render(Game.__message, 
+        font = pygame.font.Font(os.path.join(*Config.font_path))
+        self.__my_text = font.render(Config.message, 
                                      True, 
-                                     Game.__font_foreground_color, 
-                                     Game.__background_color)
+                                     Config.font_foreground_color, 
+                                     Config.background_color)
         self.__running = True
         self.__hero_image_half_width = self.__hero_image.get_width()/2
         self.__hero_image_half_height = self.__hero_image.get_height()/2
@@ -55,10 +45,10 @@ class Game:
         while self.__running: 
             delta_time, last_time = self.__calc_delta_time(last_time)
             time_since_last_update += delta_time                                           
-            while time_since_last_update > Game.__time_per_frame:
-                time_since_last_update -= Game.__time_per_frame
+            while time_since_last_update > Config.time_per_frame:
+                time_since_last_update -= Config.time_per_frame
                 self.__process_event()
-                self.__update(Game.__time_per_frame)
+                self.__update(Config.time_per_frame)
             self.__render()
         
         self.__quit()
@@ -88,13 +78,13 @@ class Game:
         speed = pygame.math.Vector2(0.0,0.0)
 
         if self.__is_moving_left:
-            speed.x -=  Game.__hero_speed
+            speed.x -=  Config.hero_speed
         if self.__is_moving_right:
-            speed.x += Game.__hero_speed 
+            speed.x += Config.hero_speed 
         if self.__is_moving_up:
-            speed.y -= Game.__hero_speed
+            speed.y -= Config.hero_speed
         if self.__is_moving_down:
-            speed.y += Game.__hero_speed
+            speed.y += Config.hero_speed
     
         distance = speed * delta_time
         
@@ -105,7 +95,7 @@ class Game:
 
     def __render(self):
     
-        self.__screen.fill(Game.__background_color)
+        self.__screen.fill(Config.background_color)
         self.__screen.blit(self.__hero_image, self.__hero_position.xy)
         self.__fps_stats.render(self.__screen)
 
