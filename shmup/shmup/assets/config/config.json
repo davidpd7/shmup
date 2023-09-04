@@ -1,6 +1,6 @@
 {
     "hero" : {
-        "image": ["shmup","assets", "images", "images.png"],
+        "image": ["shmup","assets", "images", "hero.png"],
         "speed" : 0.5
     },
 
