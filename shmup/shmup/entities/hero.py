@@ -3,12 +3,13 @@ from importlib import resources
 import pygame
 
 from shmup.config import cfg_item
+from shmup.entities.gameobject  import GameObject
 
-class Hero():
+class Hero(GameObject):
 
     def __init__(self, screen):
 
-
+        super().__init__()
         with resources.path(cfg_item("entities", "hero","image_file")[0],cfg_item("entities", "hero","image_file")[1]) as hero_file:
             self.__hero_image  =  pygame.image.load(hero_file).convert_alpha()
 
@@ -22,10 +23,13 @@ class Hero():
 
         self.__hero_image_half_width = self.__hero_image.get_width()/2
         self.__hero_image_half_height = self.__hero_image.get_height()/2
-        self.__hero_position = pygame.math.Vector2(self.__screen_width/2 - self.__hero_image_half_width,
-                                                    self.__screen_height/2 - self.__hero_image_half_height)
-        
+        self._position = pygame.math.Vector2(self.__screen_width/2,
+                                                    self.__screen_height/2)
+        self.render_rect = self.__hero_image.get_rect()
+        self.rect = self.__hero_image.get_rect()
+        self.rect.inflate(self.rect.width * - 0.60, self.rect.height - -0.20)
         self.__map_input()
+        self._center()
 
 
     def handle_input(self,  key, is_pressed):
@@ -53,16 +57,18 @@ class Hero():
         distance = speed * delta_time
         
         if self.__allow_move_inside_limits(distance):
-            self.__hero_position += distance
+            self._position += distance
+
+        self._center()
     
     def render(self, surface_dst):
-        surface_dst.blit(self.__hero_image, self.__hero_position.xy)
+        surface_dst.blit(self.__hero_image, self.render_rect)
 
     def release(self):
         pass
 
     def __allow_move_inside_limits(self, movement):
-        new_pos =  self.__hero_position + movement
+        new_pos =  self._position + movement
         if (new_pos.x < -self.__hero_image_half_width ) or (new_pos.x >self.__screen_width - self.__hero_image_half_width ) or (new_pos.y < -self.__hero_image_half_height)  or (new_pos.y >self.__screen_height - self.__hero_image_half_height):
             return False
         

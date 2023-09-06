@@ -1,10 +1,13 @@
 from importlib import resources
+import random
 
 import pygame
 
 from shmup.fps_stats import FPSStats
 from shmup.config import cfg_item
 from shmup.entities.hero import Hero
+from shmup.entities.rendergroup import RenderGroup
+from shmup.entities.enemy import Enemy
 
 class Game:
 
@@ -22,7 +25,11 @@ class Game:
         
         self.__fps_stats = FPSStats(font)
         self.__hero = Hero(self.__screen)
-
+        self.__player = RenderGroup()
+        self.__player.add(Hero(self.__screen))
+        self.__enemies = RenderGroup()
+        self.__allied_projectiles = RenderGroup()
+        self.__enemy_projectiles = RenderGroup()
       
     def run(self):
         last_time  = pygame.time.get_ticks()
@@ -43,23 +50,36 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.__running = False
                 if event.type == pygame.KEYDOWN:
-                    self.__hero.handle_input(event.key, True)
+                    self.__player.input(event.key, True)
                 if event.type == pygame.KEYUP:
-                    self.__hero.handle_input(event.key, False)
+                    self.__player.input(event.key, False)
 
     def __update(self,  delta_time): 
-        self.__hero.update(delta_time)
+        self.__player.update(delta_time)
+        self.__enemies.update(delta_time)
+        self.__allied_projectiles.update(delta_time)
+        self.__enemy_projectiles.update(delta_time)
         self.__fps_stats.update(delta_time)
+        self.__check_colisions()
+
+        self.spawn_enemies()
 
     def __render(self):
     
         self.__screen.fill(cfg_item("game","background_color"))
-        self.__hero.render(self.__screen)
+        self.__player.draw(self.__screen)
+        self.__enemies.draw(self.__screen)
+        self.__allied_projectiles.draw(self.__screen)
+        self.__enemy_projectiles.draw(self.__screen)
         self.__fps_stats.render(self.__screen)
         pygame.display.update()
 
     def __quit(self):
-        self.__hero.release()
+        self.__player.empty()
+        self.__enemies.empty()
+        self.__allied_projectiles.empty()
+        self.__enemy_projectiles.empty()
+        
         pygame.quit()
 
     
@@ -68,4 +88,11 @@ class Game:
         delta = current - last_time
         return delta, current
     
+
+    def spawn_enemies(self):
+        if random.random() < cfg_item("entities", "enemies", "spawn_prob"):
+            self.__enemies.add(Enemy())
     
+    
+    def __check_colisions(self):
+        pygame.sprite.groupcollide(self.__player, self.__enemies, False, True)

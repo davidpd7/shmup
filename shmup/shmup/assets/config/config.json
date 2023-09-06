@@ -10,7 +10,12 @@
         "hero" : {
             "image_file": ["shmup.assets.images", "hero.png"],
             "speed" : 0.5
-    }
+    },
+        "enemies":{
+            "image_file": ["shmup.assets.images", "enemy.png"],
+            "speed_range" : [0.1, 0.2],
+            "spawn_prob" : 0.01
+        }
     },
     "font": {
         "file" : ["shmup.assets.fonts", "Sansation.ttf"],
